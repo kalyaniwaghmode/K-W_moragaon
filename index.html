@@ -5,7 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="stylesheet" href="./resources/ol.css">
   <link rel="stylesheet" href="resources/fontawesome-all.min.css">
   <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
@@ -94,6 +93,24 @@
       margin-right: 6px;
       border: 1px solid #333;
     }
+    /* Dropdown panel at bottom-left */
+    #dropdown-panel {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      z-index: 10000;
+      border-radius: 4px;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+    #dropdown-panel select {
+      margin-right: 10px;
+      margin-bottom: 5px;
+    }
   </style>
   <title>QGIS2Web Map</title>
 </head>
@@ -124,6 +141,22 @@
       <div><span class="color-box" style="background:#de2d26;"></span> 6–8</div>
       <div><span class="color-box" style="background:#a50f15;"></span> > 8</div>
     </div>
+  </div>
+
+  <!-- Bottom-left dropdown panel -->
+  <div id="dropdown-panel">
+    <label for="layerSelect">Layer:</label>
+    <select id="layerSelect">
+      <option value="">Select Layer</option>
+      <option value="trees">kalyani_vegetation-trees</option>
+      <option value="buildings">kalyani_buildingsbuilding_main_bu_4</option>
+      <option value="roads">kalyani_roadsroad_5</option>
+    </select>
+
+    <label for="attributeSelect">Attribute:</label>
+    <select id="attributeSelect">
+      <option value="">Select Attribute</option>
+    </select>
   </div>
 
   <!-- Static description panel -->
@@ -189,6 +222,27 @@
     // Checkbox toggle
     document.getElementById('treesLayerToggle').addEventListener('change', function(e) {
       treesLayer.setVisible(e.target.checked);
+    });
+
+    // Dropdown panel logic
+    var layerAttributes = {
+      'trees': ['crown_rad', 'species', 'height'],
+      'buildings': ['name', 'height', 'use'],
+      'roads': ['name', 'type', 'length']
+    };
+
+    document.getElementById('layerSelect').addEventListener('change', function() {
+      var layerKey = this.value;
+      var attrSelect = document.getElementById('attributeSelect');
+      attrSelect.innerHTML = '<option value="">Select Attribute</option>';
+      if(layerKey && layerAttributes[layerKey]) {
+        layerAttributes[layerKey].forEach(function(attr) {
+          var option = document.createElement('option');
+          option.value = attr;
+          option.textContent = attr;
+          attrSelect.appendChild(option);
+        });
+      }
     });
   </script>
 </body>
