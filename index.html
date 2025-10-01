@@ -90,6 +90,110 @@
         <div id="layer-panel">
             <h3>Layers</h3>
             <div id="layer-switcher"></div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="./resources/ol.css">
+  <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+  <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+  <link rel="stylesheet" href="./resources/qgis2web.css">
+  <style>
+    html, body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    .ol-control > * {
+      background-color: #404040!important;
+      color: #cccccc!important;
+      border-radius: 0px;
+    }
+    .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+      color: #cccccc!important;
+    }
+    .search-layer-input-search {
+      background-color: #404040!important;
+    }
+    .ol-control > *:focus, .ol-control >*:hover {
+      background-color: rgba(64, 64, 64, 0.7)!important;
+    } 
+    .ol-control {
+      background-color: rgba(255,255,255,.4) !important;
+      padding: 2px !important;
+    } 
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    /* Description panel at bottom */
+    #description-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      color: #000000;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      z-index: 9999;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+    /* Layer panel on left */
+    #layer-panel {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 220px;
+      background: #fff;
+      border-right: 1px solid #ccc;
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      z-index: 10000;
+      height: auto;
+      max-height: 80%;
+      overflow-y: auto;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    #layer-panel h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+    /* Legend styles */
+    #legend {
+      margin-top: 15px;
+      font-size: 13px;
+    }
+    #legend div {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    #legend span.color-box {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-right: 6px;
+      border: 1px solid #333;
+    }
+  </style>
+  <title>QGIS2Web Map</title>
+</head>
+<body>
+  <div id="map">
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+  </div>
 
             <h4>Trees (Graduated by Crown Radius)</h4>
             <select id="tree-style">
@@ -99,6 +203,15 @@
                 <option value="high">Large Crowns (&gt; 15m)</option>
             </select>
         </div>
+  <!-- Layer panel -->
+  <div id="layer-panel">
+    <h3>Layers</h3>
+    <ul>
+      <li>
+        <input type="checkbox" id="treesLayerToggle" checked>
+        kalyani_vegetation-trees
+      </li>
+    </ul>
 
         <div id="map">
             <div id="popup" class="ol-popup">
@@ -106,32 +219,32 @@
                 <div id="popup-content"></div>
             </div>
         </div>
+    <!-- Legend -->
+    <div id="legend">
+      <h4>Tree Crown Radius (m)</h4>
+      <div><span class="color-box" style="background:#fee5d9;"></span> ≤ 2</div>
+      <div><span class="color-box" style="background:#fcae91;"></span> 2–4</div>
+      <div><span class="color-box" style="background:#fb6a4a;"></span> 4–6</div>
+      <div><span class="color-box" style="background:#de2d26;"></span> 6–8</div>
+      <div><span class="color-box" style="background:#a50f15;"></span> > 8</div>
+    </div>
+  </div>
 
         <!-- Static description panel -->
         <div id="description-panel">
             This is a Studio-III work of Kalyani Waghmode, a student of Urban Design M.Arch at KRVIA
         </div>
+  <!-- Static description panel -->
+  <div id="description-panel">
+    Studio-III M.Arch (UD)
+  </div>
 
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="resources/photon-geocoder-autocomplete.min.js"></script>
-        <script src="layers/kalyani_plotboundaryplot_140725_2.js"></script>
-        <script src="layers/kalyani_waterbodywaterway_140725_3.js"></script>
-        <script src="layers/kalyani_buildingsbuilding_main_bu_4.js"></script>
-        <script src="layers/kalyani_roadsroad_5.js"></script>
-        <script src="layers/kalyani_vegetationtree_6.js"></script>
-        <script src="layers/kalyani_neighbourhood__neighbourhood_05_7.js"></script>
-        <script src="styles/kalyani_plotboundaryplot_140725_2_style.js"></script>
-        <script src="styles/kalyani_waterbodywaterway_140725_3_style.js"></script>
-        <script src="styles/kalyani_buildingsbuilding_main_bu_4_style.js"></script>
-        <script src="styles/kalyani_roadsroad_5_style.js"></script>
-        <script src="styles/kalyani_vegetationtree_6_style.js"></script>
-        <script src="styles/kalyani_neighbourhood__neighbourhood_05_7_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
+  <!-- Scripts -->
+  <script src="resources/qgis2web_expressions.js"></script>
+  <script src="./resources/functions.js"></script>
+  <script src="./resources/ol.js"></script>
+  <script src="./resources/ol-layerswitcher.js"></script>
+  <script src="resources/photon-geocoder-autocomplete.min.js"></script>
 
         <script>
             // Add LayerSwitcher control
@@ -142,16 +255,60 @@
                 groupSelectStyle: 'children'
             });
             map.addControl(layerSwitcher);
+  <script src="layers/kalyani_plotboundaryplot_140725_2.js"></script>
+  <script src="layers/kalyani_waterbodywaterway_140725_3.js"></script>
+  <script src="layers/kalyani_buildingsbuilding_main_bu_4.js"></script>
+  <script src="layers/kalyani_roadsroad_5.js"></script>
+  <script src="layers/kalyani_vegetationtree_6.js"></script>
+  <script src="layers/kalyani_neighbourhood__neighbourhood_05_7.js"></script>
+  <script src="styles/kalyani_plotboundaryplot_140725_2_style.js"></script>
+  <script src="styles/kalyani_waterbodywaterway_140725_3_style.js"></script>
+  <script src="styles/kalyani_buildingsbuilding_main_bu_4_style.js"></script>
+  <script src="styles/kalyani_roadsroad_5_style.js"></script>
+  <script src="styles/kalyani_vegetationtree_6_style.js"></script>
+  <script src="styles/kalyani_neighbourhood__neighbourhood_05_7_style.js"></script>
+  <script src="./layers/layers.js" type="text/javascript"></script> 
+  <script src="./resources/Autolinker.min.js"></script>
+  <script src="./resources/qgis2web.js"></script>
 
             // Find the tree layer by title
             var treeLayer = layersList.find(l => l.get('title') && l.get('title').includes("kalyani_vegetation-trees"));
+  <script>
+    // Graduated style for crown_rad
+    function getTreeStyle(feature) {
+      var value = feature.get('crown_rad');
+      var color = '#cccccc';
+      if (value <= 2) color = '#fee5d9';
+      else if (value <= 4) color = '#fcae91';
+      else if (value <= 6) color = '#fb6a4a';
+      else if (value <= 8) color = '#de2d26';
+      else color = '#a50f15';
 
             function setTreeStyle(mode) {
                 if (!treeLayer) return;
+      return new ol.style.Style({
+        image: new ol.style.Circle({
+          radius: 5,
+          fill: new ol.style.Fill({color: color}),
+          stroke: new ol.style.Stroke({color: '#333', width: 1})
+        })
+      });
+    }
 
                 treeLayer.setStyle(function(feature) {
                     var value = parseFloat(feature.get('crown_rad'));
                     var color = 'green';
+    // Create trees layer with graduated style
+    var treesLayer = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: new ol.format.GeoJSON().readFeatures(json_kalyani_vegetationtree_6,
+          {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'})
+      }),
+      style: getTreeStyle,
+      visible: true,
+      title: 'kalyani_vegetation-trees'
+    });
+    map.addLayer(treesLayer);
 
                     if (mode === 'low' && value < 5) color = '#a1d99b';
                     else if (mode === 'medium' && value >= 5 && value < 15) color = '#31a354';
@@ -177,4 +334,10 @@
             setTreeStyle('default');
         </script>
     </body>
+    // Checkbox toggle
+    document.getElementById('treesLayerToggle').addEventListener('change', function(e) {
+      treesLayer.setVisible(e.target.checked);
+    });
+  </script>
+</body>
 </html>
